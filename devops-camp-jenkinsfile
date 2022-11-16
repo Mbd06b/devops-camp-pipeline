@@ -36,10 +36,10 @@ pipeline {
             steps {
                 echo "Building application image"
                 //("Lab 4 - Artifact Management"): build the docker app image
-                withCredentials([usernameColonPassword(credentialsId: '$JENKINS_HARBOR_CREDENTIAL_ID', variable: 'HARBOR-AUTH')]) {
+                withCredentials([usernameColonPassword(credentialsId: "'$JENKINS_HARBOR_CREDENTIAL_ID'", variable: 'HARBOR-AUTH')]) {
                     script {
                         sh 'docker build -t $APP_IMAGE_NAME-$COMMIT_HASH -f ./$APP_IMAGE_NAME/Dockerfile ./afs-labs-student'
-                        docker.withRegistry('https://$HARBOR_REGISTRY', '$JENKINS_HARBOR_CREDENTIAL_ID') {
+                        docker.withRegistry('https://$HARBOR_REGISTRY', "'$JENKINS_HARBOR_CREDENTIAL_ID'") {
                             sh 'docker tag $APP_IMAGE_NAME-$COMMIT_HASH $HARBOR_REGISTRY/$HARBOR_PROJECT/$APP_IMAGE_NAME:$COMMIT_HASH-$PIPELINE_HASH'
                             sh 'docker push $HARBOR_REGISTRY/$HARBOR_PROJECT/$APP_IMAGE_NAME:$COMMIT_HASH-$PIPELINE_HASH'
                         }
@@ -65,10 +65,10 @@ pipeline {
             steps {
                 echo "Building database image"
                 //("Lab 4 - Artifact Management"): build the docker db image
-                withCredentials([usernameColonPassword(credentialsId: '$JENKINS_HARBOR_CREDENTIAL_ID', variable: 'HARBOR-AUTH')]) {
+                withCredentials([usernameColonPassword(credentialsId: "'$JENKINS_HARBOR_CREDENTIAL_ID'", variable: 'HARBOR-AUTH')]) {
                     script {
                         sh 'docker build -t $DB_IMAGE_NAME-$COMMIT_HASH -f ./$DB_IMAGE_NAME/Dockerfile ./afs-labs-student'
-                        docker.withRegistry('https://$HARBOR_REGISTRY', '$JENKINS_HARBOR_CREDENTIAL_ID') {
+                        docker.withRegistry('https://$HARBOR_REGISTRY', "'$JENKINS_HARBOR_CREDENTIAL_ID'") {
                             sh 'docker tag $DB_IMAGE_NAME-$COMMIT_HASH $HARBOR_REGISTRY/$HARBOR_PROJECT/$DB_IMAGE_NAME:$COMMIT_HASH-$PIPELINE_HASH'
                             sh 'docker push $HARBOR_REGISTRY/$HARBOR_PROJECT/$DB_IMAGE_NAME:$COMMIT_HASH-$PIPELINE_HASH'
                         }
